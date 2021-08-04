@@ -18,19 +18,21 @@ void setup() {
   .setValue(0)
   .setPosition(0,0)
   .setSize(width,200)
+  .setLabel("UP")
   ;
   
   cp5.addButton("yield")
   .setValue(0)
   .setPosition(0,200)
   .setSize(width,200)
-  .setValueLabel("halt")
+  .setLabel("STOP")
   ;
   
   cp5.addButton("down")
   .setValue(0)
   .setPosition(0,400)
   .setSize(width,200)
+  .setLabel("DOWN")
   ;
   
   String pattern = "/dev/tty.usbmodem"; // mac only
