@@ -6,7 +6,7 @@
 
 char val;
 int ledPin = 13;
-int velocity = 1000;
+int velocity = 200;
 int dir = 0;
 
 #include "globals.h"
@@ -18,8 +18,8 @@ void setup() {
   Serial.begin(9600);
 
   for (uint8_t i = 0; i <  (sizeof(motors) / sizeof(motors[0])) ; i++) {
-    motors[i].setMaxSpeed(12800);
-    motors[i].setSpeed(1000);
+    motors[i].setMaxSpeed(velocity);
+    motors[i].setSpeed(velocity);
   }
   
 }
@@ -47,5 +47,5 @@ void loop() {
       motors[i].runSpeed();
     }
   }
-  delay(100);
+  //delay(100);
 }
