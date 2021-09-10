@@ -6,7 +6,7 @@
 
 char val;
 int ledPin = 13;
-int velocity = 200;
+int velocity = 300;
 int dir = 0;
 
 #include "globals.h"
@@ -46,6 +46,26 @@ void loop() {
       motors[i].setSpeed(velocity*dir);
       motors[i].runSpeed();
     }
+  } else if(val == '1') {
+    setVelocity(300);
+  } else if(val == '2') {
+    setVelocity(500);
+  } else if(val == '3') {
+    setVelocity(700);
+  } else if(val == '4') {
+    setVelocity(900);
+  } else if(val == '5') {
+    setVelocity(5000);
+  } else if(val == '6') {
+    setVelocity(20000);
   }
   //delay(100);
+}
+
+void setVelocity(int v) {
+  velocity = v;
+  for (int i = 0; i < 4; i++) {
+    motors[i].setMaxSpeed(v);
+    motors[i].setSpeed(v*dir);
+  }
 }

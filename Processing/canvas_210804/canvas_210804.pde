@@ -17,22 +17,64 @@ void setup() {
   cp5.addButton("up")
   .setValue(0)
   .setPosition(0,0)
-  .setSize(width,200)
+  .setSize(width/2,100)
   .setLabel("UP")
   ;
   
   cp5.addButton("yield")
   .setValue(0)
-  .setPosition(0,200)
-  .setSize(width,200)
+  .setPosition(0,100)
+  .setSize(width/2,100)
   .setLabel("STOP")
   ;
   
   cp5.addButton("down")
   .setValue(0)
-  .setPosition(0,400)
-  .setSize(width,200)
+  .setPosition(0,200)
+  .setSize(width/2,100)
   .setLabel("DOWN")
+  ;
+  
+  cp5.addButton("v1")
+  .setValue(0)
+  .setPosition(width/2,0)
+  .setSize(width/2,100)
+  .setLabel("VELOCITY 300")
+  ;
+  
+  cp5.addButton("v2")
+  .setValue(0)
+  .setPosition(width/2,100)
+  .setSize(width/2,100)
+  .setLabel("VELOCITY 500")
+  ;
+  
+  cp5.addButton("v3")
+  .setValue(0)
+  .setPosition(width/2,200)
+  .setSize(width/2,100)
+  .setLabel("VELOCITY 700")
+  ;
+  
+  cp5.addButton("v4")
+  .setValue(0)
+  .setPosition(width/2,300)
+  .setSize(width/2,100)
+  .setLabel("VELOCITY 800")
+  ;
+  
+  cp5.addButton("v5")
+  .setValue(0)
+  .setPosition(width/2,400)
+  .setSize(width/2,100)
+  .setLabel("VELOCITY 5.000")
+  ;
+  
+  cp5.addButton("v6")
+  .setValue(0)
+  .setPosition(width/2,500)
+  .setSize(width/2,100)
+  .setLabel("VELOCITY 20.000")
   ;
   
   String pattern = "/dev/tty.usbmodem"; // mac only
@@ -54,7 +96,7 @@ void setup() {
 }
 
 void draw() {
-  background(0);
+  background(30);
   /*
   if(motorState == 1)
   else if(motorState == 0)
@@ -64,7 +106,7 @@ void draw() {
   if ( myPort.available() > 0) {
     val = myPort.readStringUntil('\n'); 
   }
-  println(val); //print it out in the console 
+  //println(val); //print it out in the console 
   
   
 }
@@ -88,4 +130,40 @@ public void down(int theValue) {
   println("button= down");
   motorState = -1;
   myPort.write('D');
+}
+
+public void v1(int theValue) {
+  if(!setupDone) return;
+  println("v1= 300");
+  myPort.write('1');
+}
+
+public void v2(int theValue) {
+  if(!setupDone) return;
+  println("v2= 500");
+  myPort.write('2');
+}
+
+public void v3(int theValue) {
+  if(!setupDone) return;
+  println("v3= 700");
+  myPort.write('3');
+}
+
+public void v4(int theValue) {
+  if(!setupDone) return;
+  println("v4= 800");
+  myPort.write('4');
+}
+
+public void v5(int theValue) {
+  if(!setupDone) return;
+  println("v5= 5000");
+  myPort.write('5');
+}
+
+public void v6(int theValue) {
+  if(!setupDone) return;
+  println("v6= 20000");
+  myPort.write('6');
 }
