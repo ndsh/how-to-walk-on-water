@@ -8,13 +8,15 @@ char val;
 int ledPin = 13;
 int velocity = 300;
 int dir = 0;
+boolean enable = false;
 
 #include "globals.h"
 
 void setup() {
   pinMode(ledPin, OUTPUT);
   pinMode(enablePin, OUTPUT);
-  digitalWrite(enablePin, LOW);
+  //digitalWrite(enablePin, LOW);
+  enableMotors(LOW);
   Serial.begin(9600);
 
   for (uint8_t i = 0; i <  (sizeof(motors) / sizeof(motors[0])) ; i++) {
@@ -30,6 +32,7 @@ void loop() {
   }
   
   if (val == 'U') {
+    if(enable) enableMotors(LOW);
     dir = 1;
     for (int i = 0; i < 4; i++) {
       motors[i].setSpeed(velocity*dir);
@@ -41,11 +44,14 @@ void loop() {
       motors[i].stop();
       
   } else if(val == 'D') {
+    if(enable) enableMotors(LOW);
     dir = -1;
     for (int i = 0; i < 4; i++) {
       motors[i].setSpeed(velocity*dir);
       motors[i].runSpeed();
     }
+  } else if(val == 'Q') {
+    enableMotors(HIGH);
   } else if(val == '1') {
     setVelocity(300);
   } else if(val == '2') {
@@ -67,5 +73,11 @@ void setVelocity(int v) {
   for (int i = 0; i < 4; i++) {
     motors[i].setMaxSpeed(v);
     motors[i].setSpeed(v*dir);
+    motors[i].runSpeed();
   }
+}
+
+void enableMotors(boolean b) {
+  enable = b;
+  digitalWrite(enablePin, enable);
 }

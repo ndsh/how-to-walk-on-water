@@ -35,6 +35,13 @@ void setup() {
   .setLabel("DOWN")
   ;
   
+  cp5.addButton("disable")
+  .setValue(0)
+  .setPosition(0,300)
+  .setSize(width/2,100)
+  .setLabel("DISABLE MOTORS")
+  ;
+  
   cp5.addButton("v1")
   .setValue(0)
   .setPosition(width/2,0)
@@ -130,6 +137,12 @@ public void down(int theValue) {
   println("button= down");
   motorState = -1;
   myPort.write('D');
+}
+
+public void disable(int theValue) {
+  if(!setupDone) return;
+  println("button= disable");
+  myPort.write('Q');
 }
 
 public void v1(int theValue) {
