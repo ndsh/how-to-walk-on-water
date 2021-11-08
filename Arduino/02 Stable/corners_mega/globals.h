@@ -17,14 +17,4 @@ AccelStepper motorD(1, A_STP, A_DIR); // Motor furthest away from Arduino
 
 AccelStepper motors[] = {motorA, motorB, motorC, motorD};
 
-const byte enablePin = 8;
-
-uint8_t stepsScaling = 150; // one step * stepsScaling
-int stepsMaximum = 2500;
-
-
-uint8_t currentState[4] = {random(3),random(3),random(3),random(3)};
-int countSteps[4] = {0, 0, 0, 0};
-
-long timestamp[4] = {0, 0, 0, 0};
-long interval[4] = {4000, 4000, 4000, 4000};
+const byte enablePin = 8; // nicht 100% sicher ob das so genutzt werden sollte. im cnc shield datenblatt mal nachgucken

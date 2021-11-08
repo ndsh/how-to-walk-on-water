@@ -7,7 +7,7 @@ int spd = A0;     // Potentiometer
 // Variables
  
 int pd = 500;       // Pulse Delay period
-boolean setdir = LOW; // Set Direction
+boolean setdir = HIGH; // Set Direction
  
 // Interrupt Handler
 
@@ -15,14 +15,10 @@ long interval = 20000;
 long timestamp = 0;
  
 void revmotor (){
- 
   setdir = !setdir;
-  
 }
- 
- 
+
 void setup() {
- 
   pinMode (driverPUL, OUTPUT);
   pinMode (driverDIR, OUTPUT);
   pinMode (driverENA, OUTPUT);
@@ -42,5 +38,4 @@ void loop() {
   delayMicroseconds(pd);
   digitalWrite(driverPUL,LOW);
   delayMicroseconds(pd);
- 
 }
