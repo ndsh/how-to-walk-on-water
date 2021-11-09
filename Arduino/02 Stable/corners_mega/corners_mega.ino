@@ -30,6 +30,7 @@ int maxVel = 20000; // higher = more rpm
 
 #include "globals.h"
 
+
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(19200);
@@ -37,6 +38,17 @@ void setup() {
 
   pinMode(ledPin, OUTPUT);
   pinMode(enablePin, OUTPUT);
+
+
+  pinMode(30, OUTPUT);
+  pinMode(31, OUTPUT);
+  pinMode(32, OUTPUT);
+  pinMode(33, OUTPUT);
+  pinMode(34, OUTPUT);
+  pinMode(35, OUTPUT);
+  pinMode(36, OUTPUT);
+  pinMode(37, OUTPUT);
+
   //digitalWrite(enablePin, LOW);
   enableMotors(LOW);
   for (uint8_t i = 0; i <  (sizeof(motors) / sizeof(motors[0])) ; i++) {
@@ -59,7 +71,7 @@ void setup() {
 
 }
 
-void loop() {  
+void loop() {
   recvWithStartEndMarkers();
   if (newData == true) {
     strcpy(tempChars, receivedChars);
@@ -67,13 +79,14 @@ void loop() {
     //   because strtok() used in parseData() replaces the commas with \0
     parseData();
     showParsedData();
-    moveMotors();
     moveTurntables();
     lightLED();
     newData = false;
   }
-}
 
+  enableCurtains();
+  moveMotors();
+}
 
 void recvWithStartEndMarkers() {
   static boolean recvInProgress = false;
@@ -81,7 +94,7 @@ void recvWithStartEndMarkers() {
   char startMarker = '<';
   char endMarker = '>';
   char rc;
-  
+
   while (Serial1.available() > 0 && newData == false) {
     rc = Serial1.read();
     //Serial.println((char)rc);
@@ -117,34 +130,34 @@ void recvWithStartEndMarkers() {
 void parseData() {
   char * strtokIndx;
   /*
-   * ena[] = {false, false, false, false};
+     ena[] = {false, false, false, false};
      int vel[] = {0, 0, 0, 0};
      int dir[] = {0, 0, 0, 0};
-   */
+  */
 
   strtokIndx = strtok(tempChars, ",");
   strcpy(msgStart, strtokIndx);
 
   // Corners
-  for(int i = 0; i<4; i++) {
+  for (int i = 0; i < 4; i++) {
     strtokIndx = strtok(NULL, ",");
-    ena[i] = atoi(strtokIndx)==1?true:false;
-  
+    ena[i] = atoi(strtokIndx) == 1 ? true : false;
+
     strtokIndx = strtok(NULL, ",");
     vel[i] = atoi(strtokIndx);
-  
+
     strtokIndx = strtok(NULL, ",");
-    dir[i] = atoi(strtokIndx)==1?1:-1;
+    dir[i] = atoi(strtokIndx) == 1 ? 1 : -1;
   }
 
   // Fans
   strtokIndx = strtok(NULL, ",");
-  fansEnable = atoi(strtokIndx)==1?true:false;
+  fansEnable = atoi(strtokIndx) == 1 ? true : false;
 
   // Turntables
-  for(int i = 0; i<3; i++) {
+  for (int i = 0; i < 3; i++) {
     strtokIndx = strtok(NULL, ",");
-    turntableEna[i] = atoi(strtokIndx)==1?true:false;
+    turntableEna[i] = atoi(strtokIndx) == 1 ? true : false;
 
     strtokIndx = strtok(NULL, ",");
     turntableVel[i] = atoi(strtokIndx);
@@ -152,7 +165,7 @@ void parseData() {
 
   // Turntable Desktop LED
   strtokIndx = strtok(NULL, ",");
-  desktopLED = atoi(strtokIndx)==1?true:false;
+  desktopLED = atoi(strtokIndx) == 1 ? true : false;
 
 
   strtokIndx = strtok(NULL, ",");
@@ -164,8 +177,8 @@ void parseData() {
 
 void showParsedData() {
   validData = false;
-  if (strcmp(msgStart, "artnet")==0 && strcmp(msgEnd, "eof")==0) {
-    for(int i = 0; i<4; i++) {
+  if (strcmp(msgStart, "artnet") == 0 && strcmp(msgEnd, "eof") == 0) {
+    for (int i = 0; i < 4; i++) {
       Serial.print(ena[i]);
       Serial.print("\t");
       vel[i] = map(vel[i], 0, 255, minVel, maxVel);
@@ -193,17 +206,29 @@ void enableMotors(boolean b) {
 }
 
 void moveMotors() {
-  if(!validData) return;
+  if (!validData) return;
 
-  for(int i = 0; i<4; i++) {
-    if(vel[i] > 0) {
+  for (int i = 0; i < 4; i++) {
+    if (vel[i] > 0) {
       motors[i].setMaxSpeed(vel[i]);
       motors[i].setSpeed(vel[i]*dir[i]);
       motors[i].runSpeed();
     } else motors[i].stop();
-    
+
   }
-  
+
+}
+
+void enableCurtains() {
+  digitalWrite(30, HIGH);
+  digitalWrite(31, HIGH);
+  digitalWrite(32, HIGH);
+  digitalWrite(33, HIGH);
+  digitalWrite(34, HIGH);
+  digitalWrite(35, HIGH);
+  digitalWrite(36, HIGH);
+  digitalWrite(37, HIGH);
+
 }
 
 void moveTurntables() {

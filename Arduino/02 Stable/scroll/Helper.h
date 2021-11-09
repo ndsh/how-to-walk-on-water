@@ -50,6 +50,8 @@ long millisEthernetStatusLink = 0;
 long millisEthernetStatusDelay = 1000;
 //int currentState = 0;
 
+boolean validData = false;
+
 // Objects
 Artnet artnet;
 

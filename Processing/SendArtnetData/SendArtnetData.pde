@@ -269,6 +269,6 @@ void draw() {
   if(online) {
     artnet.unicastDmx(scrollIP, 0, 0, scrollData);
     artnet.unicastDmx(curtainsIP, 0, 0, curtainsData);
-    artnet.unicastDmx(curtainsIP, 0, 0, cornersData);
+    artnet.unicastDmx(cornersIP, 0, 0, cornersData);
   }
 }
