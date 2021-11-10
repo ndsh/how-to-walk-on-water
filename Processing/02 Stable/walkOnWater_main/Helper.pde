@@ -26,12 +26,7 @@ String curtainsIP = "2.0.0.3";
 String cornersIP = "2.0.0.4";
 // fans are just part of a teensy
 // turntables are just part of a teensy as well
-String ledsIP = "2.12.4.132"; // glaube ich
-
-byte[] scrollData = new byte[4];
-byte[] curtainsData = new byte[12];
-byte[] cornersData = new byte[20];
-byte[][] ledsData = new byte[4][240]; // 4 universe each 240 LEDs
+String ledsIP = "2.12.4.124"; // glaube ich
 
 // some control
 void keyPressed() {
@@ -81,10 +76,30 @@ void loadChunks() {
       //println("add parameter to last chunk");
       int ena = timelineSettings.getData().getJSONObject(i).getInt("enable");
       int vel = timelineSettings.getData().getJSONObject(i).getInt("velocity");
-      int dir = timelineSettings.getData().getJSONObject(i).getInt("dir");
-      timeline.getChunk(i).setScrollParameters(ena, vel, dir);
+      String dir = timelineSettings.getData().getJSONObject(i).getString("dir");
+      timeline.getChunk(i).setScrollParameters(vel, dir);
       //if(parameter3 >= 0) timeline.getChunk(i).getAnimator().setFaderParameters(timelineSettings.getData().getJSONObject(i).getInt("parameter1"), timelineSettings.getData().getJSONObject(i).getInt("parameter2") + (int)random(0, parameter3));
       //else timeline.getChunk(i).getAnimator().setFaderParameters(timelineSettings.getData().getJSONObject(i).getInt("parameter1"), timelineSettings.getData().getJSONObject(i).getInt("parameter2"));
+    } else if(module.equals("curtains")) {
+      int motorNr = timelineSettings.getData().getJSONObject(i).getInt("motorNr");
+      int vel = timelineSettings.getData().getJSONObject(i).getInt("velocity");
+      String dir = timelineSettings.getData().getJSONObject(i).getString("dir");
+      timeline.getChunk(i).setCurtainParameters(motorNr, vel, dir);
+    } else if(module.equals("corners")) {
+      int motorNr = timelineSettings.getData().getJSONObject(i).getInt("motorNr");
+      int vel = timelineSettings.getData().getJSONObject(i).getInt("velocity");
+      String dir = timelineSettings.getData().getJSONObject(i).getString("dir");
+      timeline.getChunk(i).setCurtainParameters(motorNr, vel, dir);
+    } else if(module.equals("fans")) {
+      boolean ena = timelineSettings.getData().getJSONObject(i).getBoolean("enable");
+      timeline.getChunk(i).setFanParameters(ena);
+    } else if(module.equals("turntables")) {
+      int motorNr = timelineSettings.getData().getJSONObject(i).getInt("motorNr");
+      boolean ena = timelineSettings.getData().getJSONObject(i).getBoolean("enable");
+      int vel = timelineSettings.getData().getJSONObject(i).getInt("velocity");
+      timeline.getChunk(i).setTurntableParameters(motorNr, ena, vel);
+    } else if(module.equals("leds")) {
+    } else if(module.equals("laptop")) {
     }
   }
   

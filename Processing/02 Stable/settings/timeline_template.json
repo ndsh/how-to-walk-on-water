@@ -1,0 +1,86 @@
+[
+  {
+    "block0": "/////////////////////////////////////",
+    "block1": "/////////////////////////////////////",
+    "block2": "/////////////////////////////////////",
+    "comment": "something that happens here",
+    "thinkingStuff": "scroll, curtains, corners, fan, turntable, led",
+    "minute": 0,
+    "second": 0,
+    "milliseconds": 10,
+    "duration": 2000,
+    "module": "scroll",
+    "enable": 1,
+    "velocity": 255,
+    "dir": "up",
+  },
+
+  {
+    "comment": "",
+    "minute": 0,
+    "second": 20,
+    "milliseconds": 0,
+    "duration": 2000,
+    "module": "curtains",
+    "motorNr": 1,
+    "velocity": 0,
+    "dir": "left",
+  },
+
+  {
+    "comment": "",
+    "minute": 0,
+    "second": 20,
+    "milliseconds": 0,
+    "duration": 2000,
+    "module": "corners",
+    "motorNr": 1,
+    "velocity": 0,
+    "dir": "pull",
+  },
+
+  {
+    "comment": "",
+    "minute": 0,
+    "second": 20,
+    "milliseconds": 0,
+    "duration": 2000,
+    "module": "fans",
+    "enable": true,
+  },
+
+  {
+    "comment": "",
+    "minute": 0,
+    "second": 20,
+    "milliseconds": 0,
+    "duration": 2000,
+    "module": "turntables",
+    "motorNr": 1,
+    "enable": true,
+    "vel": 50,
+  },
+
+  {
+    "comment": "",
+    "minute": 0,
+    "second": 20,
+    "milliseconds": 0,
+    "duration": 2000,
+    "module": "leds",
+    "anistyle": "static"
+  },
+
+  {
+    "comment": "",
+    "minute": 0,
+    "second": 20,
+    "milliseconds": 0,
+    "duration": 2000,
+    "module": "laptop",
+    "ledstatus": true
+  },
+
+
+  
+]

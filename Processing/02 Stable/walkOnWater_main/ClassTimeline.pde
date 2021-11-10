@@ -71,6 +71,12 @@ class Timeline {
   boolean isGoing() {
     return go;
   }
+  
+  void getUnfinished() {
+  }
+    
+  void getFinished() {
+  }
 
 
 	void addChunk(long time, long duration, String message, String module) {
@@ -93,6 +99,29 @@ class Timeline {
 		boolean finished = false;
     boolean executeUDPonce = false;
     boolean executeCasambiOnce = false;
+    
+    byte[] scrollData = new byte[4];
+    byte[] curtainsData = new byte[12];
+    byte[] cornersData = new byte[20];
+    byte[][] ledsData = new byte[4][240]; // 4 universe each 240 LEDs
+    
+    boolean scrollEnabled = true;
+    int sliderScrollSpeed = 125;
+    boolean scrollDir = false;
+    
+    boolean[] curtainEnables = {true, true, true, true};
+    int[] curtainSpeeds = {0, 0, 0, 0};
+    boolean[] curtainDirs = {true, true, true, true};
+    
+    boolean[] cornerEnables = {true, true, true, true};
+    int[] cornerSpeeds = {0, 0, 0, 0};
+    boolean[] cornerDirs = {true, true, true, true};
+    
+    boolean[] turntableEnables = {true, true, true, true};
+    int[] turntableSpeeds = {125, 125, 125, 125};
+    
+    boolean fansEnable = false;
+    boolean desktopLED = false;
     
 
 		public Chunk(long time, long _duration, String _message, String _module) {
@@ -141,6 +170,7 @@ class Timeline {
 				ellipse(duration/100, duration/100, 20, 20);
 				pop();
         */
+        populateData();
         send();
         
 			} else if(delta > timecode+duration) {
@@ -157,6 +187,31 @@ class Timeline {
 			finished = false;
 		}
 
+    void populateData() {
+      if(module.equals("scroll")) {
+      } else if(module.equals("curtains")) {
+        for(int i = 0; i<4; i++) {
+          println(i*3+0);
+          println(i*3+1);
+          println(i*3+2);
+          curtainsData[i*3+0] = (byte) 1; //(curtainEnables[i]?1:0);
+          curtainsData[i*3+1] = (byte) curtainSpeeds[i];
+          curtainsData[i*3+2] = (byte) (curtainDirs[i]?1:0);
+        }
+        
+      } else if(module.equals("corners")) {
+        for(int i = 0; i<4; i++) {
+          println(i*3+0);
+          println(i*3+1);
+          println(i*3+2);
+          cornersData[i*3+0] = (byte) 1; //(cornerEnables[i]?1:0);
+          cornersData[i*3+1] = (byte) cornerSpeeds[i];
+          cornersData[i*3+2] = (byte) (cornerDirs[i]?1:0);
+        }
+      } else if(module.equals("leds")) {
+      }
+    }
+
     void send() {
       if(!online) return;
       if(module.equals("scroll")) {
@@ -170,11 +225,59 @@ class Timeline {
       }
     }
 
-    void setScrollParameters(int ena, int vel, int dir) {
-      
+    void setScrollParameters(int _vel, String _dir) {
+      boolean dir = false;
+      if(_dir.equals("up")) dir = true;
+      else dir = false;
+      scrollData[0] = (byte) 1;
+      scrollData[1] = (byte) map(_vel, 0, 100, 0, 255);
+      scrollData[2] = (byte) (dir?1:0);
     }
     
+    void setCurtainParameters(int m, int _vel, String _dir) {
+      m--; // in json 1-4, als array muss das 0-3
+      boolean dir = false;
+      if(_dir.equals("left")) dir = true;
+      else dir = false;
+      // alle anderen parameter auf 0 setzen
+      for(int i = 0; i<12; i++) curtainsData[i] = 0;
+      curtainsData[m*3+0] = (byte) 1; //(curtainEnables[i]?1:0);
+      curtainsData[m*3+1] = (byte) map(_vel, 0, 100, 0, 255); // conversion from 0-10 to the 0-255 range
+      curtainsData[m*3+2] = (byte) (dir?1:0);
+    }
     
+    void setCornersParameters(int m, int _vel, String _dir) {
+      m--;
+      boolean dir = false;
+      if(_dir.equals("pull")) dir = true;
+      else dir = false;
+      // alle anderen parameter auf 0 setzen
+      for(int i = 0; i<20; i++) cornersData[i] = 0;
+      cornersData[m*3+0] = (byte) 1; //(curtainEnables[i]?1:0);
+      cornersData[m*3+1] = (byte) map(_vel, 0, 100, 0, 255); // conversion from 0-10 to the 0-255 range
+      cornersData[m*3+2] = (byte) (dir?1:0);
+    }   
+    
+    void setFanParameters(boolean b) {
+      // alle anderen parameter auf 0 setzen
+      for(int i = 0; i<20; i++) cornersData[i] = 0;
+      cornersData[12] = (byte) (b?1:0);
+    }
+    
+    void setTurntableParameters(int m, boolean ena, int _vel) {
+      // noch nicht fertig
+      /*
+      m--;
+      boolean dir = false;
+      if(_dir.equals("pull")) dir = true;
+      else dir = false;
+      // alle anderen parameter auf 0 setzen
+      for(int i = 0; i<20; i++) cornersData[i] = 0;
+      cornersData[((m*2)+0)+13] = (byte) 1; //(curtainEnables[i]?1:0);
+      cornersData[m*3+1] = (byte) map(_vel, 0, 100, 0, 255); // conversion from 0-10 to the 0-255 range
+      cornersData[m*3+2] = (byte) (dir?1:0);
+      */
+    } 
 
 	}
 

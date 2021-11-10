@@ -1,36 +1,62 @@
 [
   {
-    "block0": "/////////////////////////////////////",
-    "block1": "/////////////////////////////////////",
-    "block2": "/////////////////////////////////////",
-    "block3": "/////////////////////////////////////",
-    "comment": "something that happens here",
-    "thinkingStuff": "scroll, corner, curtain, fan, turntable, led",
-    "minute": 0,
+    "comment": "",
+    "minute": 1,
+    "second": 15,
+    "milliseconds": 0,
+    "duration": 25000,
+    "module": "curtains",
+    "motorNr": 1,
+    "velocity": 50,
+    "dir": "left",
+  },
+
+  {
+    "comment": "",
+    "minute": 1,
+    "second": 20,
+    "milliseconds": 0,
+    "duration": 25000,
+    "module": "curtains",
+    "motorNr": 2,
+    "velocity": 50,
+    "dir": "left",
+  },
+
+  {
+    "comment": "",
+    "minute": 1,
+    "second": 25,
+    "milliseconds": 0,
+    "duration": 25000,
+    "module": "curtains",
+    "motorNr": 3,
+    "velocity": 50,
+    "dir": "left",
+  },
+
+  {
+    "comment": "",
+    "minute": 1,
+    "second": 30,
+    "milliseconds": 0,
+    "duration": 25000,
+    "module": "curtains",
+    "motorNr": 4,
+    "velocity": 50,
+    "dir": "left",
+  },
+
+  {
+    "comment": "",
+    "minute": 2,
     "second": 0,
-    "milliseconds": 10,
+    "milliseconds": 0,
     "duration": 2000,
     "module": "scroll",
     "enable": 1,
     "velocity": 255,
     "dir": "up",
   },
-
-  {
-    "comment": "",
-    "minute": 0,
-    "second": 20,
-    "milliseconds": 0,
-    "duration": 2000,
-    "module": "curtains",
-    "parameter1": 0,
-    "parameter2": 0,
-    "parameter3": 0,
-    "parameter4": 0,
-    "parameter5": 0,
-    "parameter6": 0,
-    "parameter7": 0
-  },
-
   
 ]
