@@ -15,10 +15,8 @@ int vel[] = {0, 0, 0, 0};
 int dir[] = {0, 0, 0, 0};
 boolean turntableEna[] = {0, 0, 0};
 int turntableVel[] = {0, 0, 0};
-boolean fansEnable = LOW;
+boolean fansEnable = 0;
 boolean desktopLED = 0;
-
-int fanPins[] = {30, 31, 32, 33, 34, 35, 36, 37};
 
 // cnc shield
 int ledPin = 13;
@@ -41,12 +39,15 @@ void setup() {
   pinMode(ledPin, OUTPUT);
   pinMode(enablePin, OUTPUT);
 
-  for(int i = 0; i<8; i++) {
-    pinMode(fanPins[i], OUTPUT);
-    digitalWrite(fanPins[i], LOW);
-  }
 
-  //
+  pinMode(30, OUTPUT);
+  pinMode(31, OUTPUT);
+  pinMode(32, OUTPUT);
+  pinMode(33, OUTPUT);
+  pinMode(34, OUTPUT);
+  pinMode(35, OUTPUT);
+  pinMode(36, OUTPUT);
+  pinMode(37, OUTPUT);
 
   //digitalWrite(enablePin, LOW);
   enableMotors(LOW);
@@ -80,12 +81,10 @@ void loop() {
     showParsedData();
     moveTurntables();
     lightLED();
-    
     newData = false;
   }
-  fanControl(fansEnable);
-  // verstehe nicht warum die funktion enableCurtains heißt aber die pins von den fans setzt ;)
-  //enableCurtains(); 
+
+  enableCurtains();
   moveMotors();
 }
 
@@ -229,13 +228,7 @@ void enableCurtains() {
   digitalWrite(35, HIGH);
   digitalWrite(36, HIGH);
   digitalWrite(37, HIGH);
-}
 
-// bisschen schlanker
-void fanControl(boolean b) {
-  for(int i = 0; i<8; i++) {
-    digitalWrite(fanPins[i], b);
-  }
 }
 
 void moveTurntables() {

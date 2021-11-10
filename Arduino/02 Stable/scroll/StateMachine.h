@@ -104,15 +104,16 @@ void stateMachine() {
 
       boolean isEnabled = motorEnabled==1?true:false;
       boolean direction = motorSpeed==1?true:false; // true = up, false = down
-      
-      pd = map(motorSpeed, 0, 255, 8000, 0);
 
-      digitalWrite(driverDIR, motorDirection);
-      digitalWrite(driverPUL, HIGH);
-      delayMicroseconds(pd);
-      digitalWrite(driverPUL, LOW);
-      delayMicroseconds(pd);
-      
+      if(motorSpeed != 0) {
+        pd = map(motorSpeed, 0, 255, 8000, 0);
+        
+        digitalWrite(driverDIR, motorDirection);
+        digitalWrite(driverPUL, HIGH);
+        delayMicroseconds(pd);
+        digitalWrite(driverPUL, LOW);
+        delayMicroseconds(pd);
+      }
       prevState = NETWORK;
       state = NETWORK;
     break;

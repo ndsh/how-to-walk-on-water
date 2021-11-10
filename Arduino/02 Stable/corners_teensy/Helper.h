@@ -1,4 +1,4 @@
-// Include libraries
+  // Include libraries
 
 //#include <Ethernet.h>
 //#include <EthernetUdp.h>
@@ -34,7 +34,7 @@ long millisKeepAlive = 0;
 long delayNetworkCheck = 1000; // 10 sekunden ist auch okay, aber dauert lange zum reconnecten
 byte ip[] = {2, 0, 0, 4};
 byte broadcast[] = {2, 0, 0, 255}; // eigene ip
-byte mac[] = {0x04, 0xE9, 0xE5, 0x00, 0x69, 0xEC};
+byte mac[] = {0x04, 0xE9, 0xE5, 0x00, 0x67, 0xEC};
 uint16_t r;
 boolean showStateTitle = false;
 int prevState = 0;

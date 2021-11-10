@@ -22,13 +22,13 @@ boolean enable = false;
 boolean validData = true;
 
 int minVel = 0;
-int maxVel = 20000; // higher = more rpm
+int maxVel = 2000; // higher = more rpm
 
 #include "globals.h"
 
 void setup() {
   // put your setup code here, to run once:
-  //Serial.begin(19200);
+  Serial.begin(19200);
   Serial1.begin(19200);
 
   pinMode(ledPin, OUTPUT);
@@ -63,10 +63,9 @@ void loop() {
     //   because strtok() used in parseData() replaces the commas with \0
     parseData();
     showParsedData();
-    //moveMotors(); // verschoben nach unten damit es immer auslösen kann
+    moveMotors();
     newData = false;
   }
-  moveMotors();
 }
 
 
@@ -149,8 +148,6 @@ void showParsedData() {
       Serial.print("\t");
       Serial.print(dir[i]);
       Serial.println("\t");
-      motors[i].setMaxSpeed(vel[i]);
-      motors[i].setSpeed(vel[i]*dir[i]);
     }
     Serial.println(" * * * ");
     validData = true;
@@ -171,14 +168,12 @@ void enableMotors(boolean b) {
 }
 
 void moveMotors() {
-  // das ist deaktiviert, sodass es jede loop auslösen kann
-  //if(!validData) return;
+  if(!validData) return;
 
   for(int i = 0; i<4; i++) {
     if(vel[i] > 0) {
-      // die beiden werte setze ich jetzt in showParsedDaa
-      //motors[i].setMaxSpeed(vel[i]);
-      //motors[i].setSpeed(vel[i]*dir[i]);
+      motors[i].setMaxSpeed(vel[i]);
+      motors[i].setSpeed(vel[i]*dir[i]);
       motors[i].runSpeed();
     } else motors[i].stop();
     
