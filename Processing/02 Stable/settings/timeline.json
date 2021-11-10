@@ -1,0 +1,36 @@
+[
+  {
+    "block0": "/////////////////////////////////////",
+    "block1": "/////////////////////////////////////",
+    "block2": "/////////////////////////////////////",
+    "block3": "/////////////////////////////////////",
+    "comment": "something that happens here",
+    "thinkingStuff": "scroll, corner, curtain, fan, turntable, led",
+    "minute": 0,
+    "second": 0,
+    "milliseconds": 10,
+    "duration": 2000,
+    "module": "scroll",
+    "enable": 1,
+    "velocity": 255,
+    "dir": "up",
+  },
+
+  {
+    "comment": "",
+    "minute": 0,
+    "second": 20,
+    "milliseconds": 0,
+    "duration": 2000,
+    "module": "curtains",
+    "parameter1": 0,
+    "parameter2": 0,
+    "parameter3": 0,
+    "parameter4": 0,
+    "parameter5": 0,
+    "parameter6": 0,
+    "parameter7": 0
+  },
+
+  
+]
