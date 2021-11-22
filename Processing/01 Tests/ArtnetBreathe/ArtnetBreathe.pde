@@ -25,11 +25,11 @@ void draw() {
   background(153);
   for (int i = 0; i <= universeSize; i++) {
     float p = position + i * map(255, 0, 255, 0, PI/2);
-    float val = (exp(sin(millis()/2000.0*(PI/2))) - 0.36787944)*108.0;
+    float val = (exp(sin(millis()/2000.0*(PI/8))) - 0.36787944)*108.0;
     val = limiter(val);
     background(val);
     //dmxOutput.set(i,(int) max(0, map(sin(p), -1, 1, -(128-50)*10, 50*2)));
-    dmxData[i] = (byte)i;
+    dmxData[i] = (byte)val;
 
   }
   

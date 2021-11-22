@@ -14,12 +14,28 @@ void stateMachine(int _state) {
     break;
     
     case IDLE:
+      if(!mediaShow) {
+        //breatheLEDs();
+        stopAllMotors();
+        //sendLEDs();
+      }
+      
       state = IDLE;
-      if(mediaShow) state = SHOW;
+      if(mediaShow) {
+        // leds to black
+        
+        if(playAudio) playAudioFromStart(); // reset audio when using it 
+        state = SHOW;
+      }
       
     break;
     
     case SHOW:
+      if(!blackOffLEDs) {
+        blackOffLEDs = true;
+        ledsData = new byte[4][40*6];
+        sendLEDs();
+      }
       if(mediaShow) ;//animator.black();
       if(!timeline.isReady() && !timeline.isGoing()) {
         timeline.init();

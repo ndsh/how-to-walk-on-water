@@ -10,9 +10,10 @@ char msgEnd[numChars] = {0};
 
 boolean newData = false;
 
-boolean ena[] = {false, false, false, false};
 int vel[] = {0, 0, 0, 0};
 int dir[] = {0, 0, 0, 0};
+boolean enableShield = false;
+boolean prevEnableValue = false;
 
 // cnc shield
 int ledPin = 13;
@@ -28,7 +29,7 @@ int maxVel = 2000; // higher = more rpm
 
 void setup() {
   // put your setup code here, to run once:
-  Serial.begin(19200);
+  //Serial.begin(19200);
   Serial1.begin(19200);
 
   pinMode(ledPin, OUTPUT);
@@ -63,9 +64,11 @@ void loop() {
     //   because strtok() used in parseData() replaces the commas with \0
     parseData();
     showParsedData();
-    moveMotors();
+    enableMotors(enableShield);
     newData = false;
   }
+  moveMotors();
+  
 }
 
 
@@ -119,16 +122,17 @@ void parseData() {
   strtokIndx = strtok(tempChars, ",");
   strcpy(msgStart, strtokIndx);
 
-  for(int i = 0; i<4; i++) {
-    strtokIndx = strtok(NULL, ",");
-    ena[i] = atoi(strtokIndx)==1?true:false;
-  
+  // Corners
+  for (int i = 0; i < 4; i++) {
     strtokIndx = strtok(NULL, ",");
     vel[i] = atoi(strtokIndx);
-  
+
     strtokIndx = strtok(NULL, ",");
-    dir[i] = atoi(strtokIndx)==1?1:-1;
+    dir[i] = atoi(strtokIndx) == 1 ? 1 : -1;
   }
+
+  strtokIndx = strtok(NULL, ",");
+  enableShield = atoi(strtokIndx) == 1 ? true : false;
 
   strtokIndx = strtok(NULL, ",");
   strcpy(msgEnd, strtokIndx);
@@ -141,12 +145,14 @@ void showParsedData() {
   validData = false;
   if (strcmp(msgStart, "artnet")==0 && strcmp(msgEnd, "eof")==0) {
     for(int i = 0; i<4; i++) {
-      Serial.print(ena[i]);
-      Serial.print("\t");
+//      Serial.print(ena[i]);
+  //    Serial.print("\t");
       vel[i] = map(vel[i], 0, 255, minVel, maxVel);
       Serial.print(vel[i]);
       Serial.print("\t");
       Serial.print(dir[i]);
+      Serial.print("\t");
+      Serial.print(enableShield);
       Serial.println("\t");
     }
     Serial.println(" * * * ");
@@ -163,8 +169,10 @@ void setVelocity(int v, int i) {
 
 void enableMotors(boolean b) {
   // enablePin = LOW = active motors??
-  enable = b;
+  //if(prevEnableValue == enable) return;
+  enable = !b;
   digitalWrite(enablePin, enable);
+  //prevEnableValue = enable;
 }
 
 void moveMotors() {

@@ -6,12 +6,13 @@ int spd = A0;     // Potentiometer
  
 // Variables
  
-int pd = 500;       // Pulse Delay period
-boolean setdir = HIGH; // Set Direction
+int pd = 1300;       // Pulse Delay period
+boolean setdir = LOW; // Set Direction
  
 // Interrupt Handler
 
-long interval = 20000;
+long interval = 120000;
+//long interval = 2000;
 long timestamp = 0;
  
 void revmotor (){
@@ -30,6 +31,7 @@ void setup() {
 void loop() {
   if(millis() - timestamp > interval) {
     timestamp = millis();
+    //setdir = !setdir;
     //revmotor();
   }
     //pd = map((analogRead(spd)),0,1023,2000,50);

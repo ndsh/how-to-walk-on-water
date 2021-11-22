@@ -10,12 +10,13 @@
 
 // Pin definitions
 #define HWSERIAL2 Serial2
+#define HWSERIAL3 Serial3
 
-int ena[] = {1, 1, 1, 1};
+int cornerEna = 0;
 int vel[] = {0, 0, 0, 0};
 int dir[] = {0, 0, 0, 0};
 
-int turntableEna[] = {0, 0, 0};
+int turntableEna = 0;
 int turntableVel[] = {0, 0, 0};
 int fansEnable = 0;
 int desktopLED = 0;
@@ -82,6 +83,7 @@ void setupEnv() {
   //artnet.setBroadcast(broadcast);
 
   HWSERIAL2.begin(19200);
+  HWSERIAL3.begin(19200);
   pinMode(LED_BUILTIN, OUTPUT);
   digitalWrite(LED_BUILTIN, HIGH);
 

@@ -6,7 +6,7 @@ ControlP5 cp5;
 
 // general variables
 PFont font;
-boolean online = false;
+boolean online = true;
 boolean cp5init = false;
 
 // runtime variables
@@ -21,6 +21,8 @@ String cornersIP = "2.0.0.4";
 // fans are just part of a teensy
 // turntables are just part of a teensy as well
 String ledsIP = "2.12.4.132"; // glaube ich
+String schwankhalleLichtIP = "2.92.190.194"; // glaube ich
+String schwankhalleLicht2IP = "10.92.190.194"; // glaube ich
 
 boolean scrollEnabled = true;
 int sliderScrollSpeed = 0;
@@ -28,14 +30,14 @@ boolean scrollDir = false;
 
 boolean[] curtainEnables = {true, true, true, true};
 int[] curtainSpeeds = {0, 0, 0, 0};
-boolean[] curtainDirs = {true, true, true, true};
+boolean[] curtainDirs = {false, false, false, false};
 
 boolean[] cornerEnables = {true, true, true, true};
 int[] cornerSpeeds = {0, 0, 0, 0};
 boolean[] cornerDirs = {true, true, true, true};
 
-boolean[] turntableEnables = {true, true, true, true};
-int[] turntableSpeeds = {125, 125, 125, 125};
+boolean[] turntableEnables = {true, true, true};
+int[] turntableSpeeds = {100, 100, 100};
 
 boolean fansEnable = false;
 boolean desktopLED = false;
@@ -68,7 +70,7 @@ void draw() {
   text("Scroll IP: " + scrollIP, 10, 40);
   text("Enabled: " + (scrollEnabled?"yes":"no"), 30, 60);
   text("Speed: " + sliderScrollSpeed, 30, 80);
-  text("Direction: " + (scrollDir?"up":"down"), 30, 100);
+  text("Direction: " + (scrollDir?"down":"up"), 30, 100);
   text("Reset", 30, 120);
   pop();
   
@@ -83,7 +85,7 @@ void draw() {
   text("Curtains IP: " + curtainsIP, 10, 40);
   text("Enabled: " + (curtainEnables[0]?"yes":"no"), 30, 60);
   text("Speed: " + curtainSpeeds[0], 30, 80);
-  text("Direction: " + (curtainDirs[0]?"up":"down"), 30, 100);
+  text("Direction: " + (curtainDirs[0]?"closing":"opening"), 30, 100);
   text("Reset", 30, 120);
   pop();
   
@@ -96,7 +98,7 @@ void draw() {
   fill(255);
   text("Enabled: " + (curtainEnables[1]?"yes":"no"), 30, 60);
   text("Speed: " + curtainSpeeds[1], 30, 80);
-  text("Direction: " + (curtainDirs[1]?"up":"down"), 30, 100);
+  text("Direction: " + (curtainDirs[1]?"closing":"opening"), 30, 100);
   text("Reset", 30, 120);
   pop();
   
@@ -109,7 +111,7 @@ void draw() {
   fill(255);
   text("Enabled: " + (curtainEnables[2]?"yes":"no"), 30, 60);
   text("Speed: " + curtainSpeeds[2], 30, 80);
-  text("Direction: " + (curtainDirs[2]?"up":"down"), 30, 100);
+  text("Direction: " + (curtainDirs[2]?"closing":"opening"), 30, 100);
   text("Reset", 30, 120);
   pop();
   
@@ -122,7 +124,7 @@ void draw() {
   fill(255);
   text("Enabled: " + (curtainEnables[3]?"yes":"no"), 30, 60);
   text("Speed: " + curtainSpeeds[3], 30, 80);
-  text("Direction: " + (curtainDirs[3]?"up":"down"), 30, 100);
+  text("Direction: " + (curtainDirs[3]?"closing":"opening"), 30, 100);
   text("Reset", 30, 120);
   pop();
   

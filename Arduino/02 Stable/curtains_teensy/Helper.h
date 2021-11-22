@@ -12,7 +12,7 @@
 // Pin definitions
 #define HWSERIAL2 Serial2
 
-int ena[] = {1, 1, 1, 1};
+int ena = 0;
 int vel[] = {0, 0, 0, 0};
 int dir[] = {0, 0, 0, 0};
 

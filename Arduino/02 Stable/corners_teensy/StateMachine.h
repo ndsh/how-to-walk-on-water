@@ -34,7 +34,7 @@ void stateMachine() {
     break;
 
     case NETWORK:
-      digitalWrite(LED_BUILTIN, LOW);
+      //digitalWrite(LED_BUILTIN, LOW);
       if(showStateTitle || prevState == DATA) {
         Serial.println("→ Network");
         showStateTitle = false;
@@ -93,37 +93,32 @@ void stateMachine() {
         prevState = NETWORK;
         state = NETWORK;
       }
-      digitalWrite(LED_BUILTIN, HIGH);
+      //digitalWrite(LED_BUILTIN, HIGH);
       //Serial.println("getting here");
 
-      ena[0] = artnet.getDmxFrame()[0];
-      vel[0] = artnet.getDmxFrame()[1];
-      dir[0] = artnet.getDmxFrame()[2];
+      //ena[0] = artnet.getDmxFrame()[0];
+      vel[0] = artnet.getDmxFrame()[0];
+      dir[0] = artnet.getDmxFrame()[1];
       
-      ena[1] = artnet.getDmxFrame()[3];
-      vel[1] = artnet.getDmxFrame()[4];
-      dir[1] = artnet.getDmxFrame()[5];
+      //ena[1] = artnet.getDmxFrame()[3];
+      vel[1] = artnet.getDmxFrame()[2];
+      dir[1] = artnet.getDmxFrame()[3];
       
-      ena[2] = artnet.getDmxFrame()[6];
-      vel[2] = artnet.getDmxFrame()[7];
-      dir[2] = artnet.getDmxFrame()[8];
+      //ena[2] = artnet.getDmxFrame()[6];
+      vel[2] = artnet.getDmxFrame()[4];
+      dir[2] = artnet.getDmxFrame()[5];
       
-      ena[3] = artnet.getDmxFrame()[9];
-      vel[3] = artnet.getDmxFrame()[10];
-      dir[3] = artnet.getDmxFrame()[11];
+      //ena[3] = artnet.getDmxFrame()[9];
+      vel[3] = artnet.getDmxFrame()[6];
+      dir[3] = artnet.getDmxFrame()[7];
 
-      fansEnable = artnet.getDmxFrame()[12];
-
-      turntableEna[0] = artnet.getDmxFrame()[13];
-      turntableVel[0] = artnet.getDmxFrame()[14];
-
-      turntableEna[1] = artnet.getDmxFrame()[15];
-      turntableVel[1] = artnet.getDmxFrame()[16];
-
-      turntableEna[2] = artnet.getDmxFrame()[17];
-      turntableVel[2] = artnet.getDmxFrame()[18];
-
-      desktopLED = artnet.getDmxFrame()[19];
+      cornerEna = artnet.getDmxFrame()[8];
+      turntableVel[0] = artnet.getDmxFrame()[9];
+      turntableVel[1] = artnet.getDmxFrame()[10];
+      turntableVel[2] = artnet.getDmxFrame()[11];
+      turntableEna = artnet.getDmxFrame()[12];
+      fansEnable = artnet.getDmxFrame()[13];
+      desktopLED = artnet.getDmxFrame()[14];
 
       static int messageCount = 0;
       // forward to arduino mega with cnc shield
@@ -143,31 +138,63 @@ void stateMachine() {
       HWSERIAL2.print("artnet");
       HWSERIAL2.print(",");
       for(int i = 0; i<4; i++) {
-        HWSERIAL2.print(ena[i]);
-        HWSERIAL2.print(",");
         HWSERIAL2.print(vel[i]);
         HWSERIAL2.print(",");
         HWSERIAL2.print(dir[i]);
         HWSERIAL2.print(",");
       }
-      HWSERIAL2.print(fansEnable);
+      HWSERIAL2.print(cornerEna);
       HWSERIAL2.print(",");
 
       for(int i = 0; i<3; i++) {
-        HWSERIAL2.print(turntableEna[i]);
-        HWSERIAL2.print(",");
         HWSERIAL2.print(turntableVel[i]);
         HWSERIAL2.print(",");
       }
+      HWSERIAL2.print(turntableEna);
+      HWSERIAL2.print(",");
+      HWSERIAL2.print(fansEnable);
+      HWSERIAL2.print(",");
 
       HWSERIAL2.print(desktopLED);
       HWSERIAL2.print(",");
         
       HWSERIAL2.print("eof");
       HWSERIAL2.println(">");
+
+      //
+
+      HWSERIAL3.print("<");
+      HWSERIAL3.print("artnet");
+      HWSERIAL3.print(",");
+      for(int i = 0; i<4; i++) {
+        HWSERIAL3.print(vel[i]);
+        HWSERIAL3.print(",");
+        HWSERIAL3.print(dir[i]);
+        HWSERIAL3.print(",");
+      }
+      HWSERIAL3.print(cornerEna);
+      HWSERIAL3.print(",");
+
+      for(int i = 0; i<3; i++) {
+        HWSERIAL3.print(turntableVel[i]);
+        HWSERIAL3.print(",");
+      }
+      HWSERIAL3.print(turntableEna);
+      HWSERIAL3.print(",");
+      HWSERIAL3.print(fansEnable);
+      HWSERIAL3.print(",");
+
+      HWSERIAL3.print(desktopLED);
+      HWSERIAL3.print(",");
+        
+      HWSERIAL3.print("eof");
+      HWSERIAL3.println(">");
+
+      //
     
       if (++messageCount >= 5000) {
         HWSERIAL2.flush(); // wait for buffered data to transmit
+        HWSERIAL3.flush(); // wait for buffered data to transmit
         delayMicroseconds(10); // then wait approx 10 bit times
         messageCount = 0;
       }

@@ -7,7 +7,7 @@ void cp5init() {
   cp5 = new ControlP5(this);
   cp5.addSlider("sliderScrollSpeed")
   .setPosition(160, 70)
-  .setRange(0, 254)
+  .setRange(0, 250)
   .setSize(100, 16)
   .setCaptionLabel("")
   .setSliderMode(Slider.FLEXIBLE)
@@ -37,7 +37,7 @@ void cp5init() {
   ;
   
   cp5.addButton("btnCurtain0Dir")
-  .setValue(0)
+  .setValue(curtainDirs[0]?1:0)
   .setPosition(160, 210)
   .setSize(60, 16)
   .setCaptionLabel("")
@@ -216,13 +216,18 @@ void cp5init() {
   .setSize(60, 16)
   .setCaptionLabel("")
   ;
+  
+  cp5.getController("btnCurtain0Dir").setValue(curtainDirs[0]?1:0);
+  cp5.getController("btnCurtain1Dir").setValue(curtainDirs[1]?1:0);
+  cp5.getController("btnCurtain2Dir").setValue(curtainDirs[2]?1:0);
+  cp5.getController("btnCurtain3Dir").setValue(curtainDirs[3]?1:0);
 }
 
 
 public void btnScrollDir(int theValue) {
   if (!cp5init) return;
-  println("scrollDir=" + scrollDir);
   scrollDir = !scrollDir;
+  println("scrollDir=" + scrollDir);
 }
 
 public void sliderScrollSpeed(int i) {
@@ -274,26 +279,26 @@ public void btnCurtain3Reset(int theValue) {
 
 public void btnCurtain0Dir(int theValue) {
   if (!cp5init) return;
-  println("curtainDirs[0]=" + curtainDirs[0]);
   curtainDirs[0] = !curtainDirs[0];
+  println("curtainDirs[0]=" + curtainDirs[0]);
 }
 
 public void btnCurtain1Dir(int theValue) {
   if (!cp5init) return;
-  println("curtainDirs[1]=" + curtainDirs[1]);
   curtainDirs[1] = !curtainDirs[1];
+  println("curtainDirs[1]=" + curtainDirs[1]);
 }
 
 public void btnCurtain2Dir(int theValue) {
   if (!cp5init) return;
-  println("curtainDirs[2]=" + curtainDirs[2]);
   curtainDirs[2] = !curtainDirs[2];
+  println("curtainDirs[2]=" + curtainDirs[2]);
 }
 
 public void btnCurtain3Dir(int theValue) {
   if (!cp5init) return;
-  println("curtainDirs[3]=" + curtainDirs[3]);
   curtainDirs[3] = !curtainDirs[3];
+  println("curtainDirs[3]=" + curtainDirs[3]);
 }
 
 void sliderCorner0Speed(int f) {
@@ -334,26 +339,26 @@ void sliderCorner3Speed(int f) {
 
 public void btnCorner0Dir(int theValue) {
   if (!cp5init) return;
-  println("cornerDirs[0]=" + cornerDirs[0]);
   cornerDirs[0] = !cornerDirs[0];
+  println("cornerDirs[0]=" + cornerDirs[0]);
 }
 
 public void btnCorner1Dir(int theValue) {
   if (!cp5init) return;
-  println("cornerDirs[1]=" + cornerDirs[1]);
   cornerDirs[1] = !cornerDirs[1];
+  println("cornerDirs[1]=" + cornerDirs[1]);
 }
 
 public void btnCorner2Dir(int theValue) {
   if (!cp5init) return;
-  println("cornerDirs[2]=" + cornerDirs[2]);
   cornerDirs[2] = !cornerDirs[2];
+  println("cornerDirs[2]=" + cornerDirs[2]);
 }
 
 public void btnCorner3Dir(int theValue) {
   if (!cp5init) return;
-  println("cornerDirs[3]=" + cornerDirs[3]);
   cornerDirs[3] = !cornerDirs[3];
+  println("cornerDirs[3]=" + cornerDirs[3]);
 }
 
 public void btnFanEnable(int theValue) {

@@ -10,10 +10,10 @@ char msgEnd[numChars] = {0};
 
 boolean newData = false;
 
-boolean ena[] = {false, false, false, false};
+boolean enableShieldCorners = false;
 int vel[] = {0, 0, 0, 0};
 int dir[] = {0, 0, 0, 0};
-boolean turntableEna[] = {0, 0, 0};
+boolean enableShieldTurntables = false;
 int turntableVel[] = {0, 0, 0};
 boolean fansEnable = LOW;
 boolean desktopLED = 0;
@@ -30,29 +30,35 @@ boolean validData = true;
 int minVel = 0;
 int maxVel = 2000; // higher = more rpm
 
+int SPU = 2048;
+
+
 #include "globals.h"
 
 
 void setup() {
   // put your setup code here, to run once:
-  Serial.begin(19200);
+  //Serial.begin(19200);
   Serial1.begin(19200);
 
   pinMode(ledPin, OUTPUT);
-  pinMode(enablePin, OUTPUT);
+  pinMode(enablePin, OUTPUT);  
 
-  for(int i = 0; i<8; i++) {
+  for (int i = 0; i < 8; i++) {
     pinMode(fanPins[i], OUTPUT);
     digitalWrite(fanPins[i], LOW);
   }
-
-  //
 
   //digitalWrite(enablePin, LOW);
   enableMotors(LOW);
   for (uint8_t i = 0; i <  (sizeof(motors) / sizeof(motors[0])) ; i++) {
     motors[i].setMaxSpeed(vel[i]);
     motors[i].setSpeed(vel[i]*dir[i]);
+  }
+
+  for (uint8_t i = 0; i <  (sizeof(motors) / sizeof(motors[0])) ; i++) {
+    turntables[i].setMaxSpeed(0);
+    turntables[i].setSpeed(0);
   }
 
   Serial.println("Start Receive");
@@ -78,15 +84,15 @@ void loop() {
     //   because strtok() used in parseData() replaces the commas with \0
     parseData();
     showParsedData();
-    moveTurntables();
     lightLED();
-    
     newData = false;
+    enableMotors(enableShieldCorners);
+    fanControl(fansEnable);
   }
-  fanControl(fansEnable);
-  // verstehe nicht warum die funktion enableCurtains heißt aber die pins von den fans setzt ;)
-  //enableCurtains(); 
+  
+  //moveTurntables();
   moveMotors();
+  
 }
 
 void recvWithStartEndMarkers() {
@@ -142,32 +148,31 @@ void parseData() {
   // Corners
   for (int i = 0; i < 4; i++) {
     strtokIndx = strtok(NULL, ",");
-    ena[i] = atoi(strtokIndx) == 1 ? true : false;
-
-    strtokIndx = strtok(NULL, ",");
     vel[i] = atoi(strtokIndx);
 
     strtokIndx = strtok(NULL, ",");
     dir[i] = atoi(strtokIndx) == 1 ? 1 : -1;
   }
 
-  // Fans
   strtokIndx = strtok(NULL, ",");
-  fansEnable = atoi(strtokIndx) == 1 ? true : false;
+  enableShieldCorners = atoi(strtokIndx) == 1 ? true : false;
 
   // Turntables
   for (int i = 0; i < 3; i++) {
     strtokIndx = strtok(NULL, ",");
-    turntableEna[i] = atoi(strtokIndx) == 1 ? true : false;
-
-    strtokIndx = strtok(NULL, ",");
     turntableVel[i] = atoi(strtokIndx);
   }
+
+  strtokIndx = strtok(NULL, ",");
+  enableShieldTurntables = atoi(strtokIndx) == 1 ? true : false;
+
+    // Fans
+  strtokIndx = strtok(NULL, ",");
+  fansEnable = atoi(strtokIndx) == 1 ? true : false;
 
   // Turntable Desktop LED
   strtokIndx = strtok(NULL, ",");
   desktopLED = atoi(strtokIndx) == 1 ? true : false;
-
 
   strtokIndx = strtok(NULL, ",");
   strcpy(msgEnd, strtokIndx);
@@ -180,12 +185,12 @@ void showParsedData() {
   validData = false;
   if (strcmp(msgStart, "artnet") == 0 && strcmp(msgEnd, "eof") == 0) {
     for (int i = 0; i < 4; i++) {
-      Serial.print(ena[i]);
-      Serial.print("\t");
       vel[i] = map(vel[i], 0, 255, minVel, maxVel);
       Serial.print(vel[i]);
       Serial.print("\t");
       Serial.print(dir[i]);
+      Serial.print("\t");
+      Serial.print(enableShieldCorners);
       Serial.println("\t");
     }
     Serial.println(" * * * ");
@@ -202,7 +207,7 @@ void setVelocity(int v, int i) {
 
 void enableMotors(boolean b) {
   // enablePin = LOW = active motors??
-  enable = b;
+  enable = !b;
   digitalWrite(enablePin, enable);
 }
 
@@ -220,26 +225,23 @@ void moveMotors() {
 
 }
 
-void enableCurtains() {
-  digitalWrite(30, HIGH);
-  digitalWrite(31, HIGH);
-  digitalWrite(32, HIGH);
-  digitalWrite(33, HIGH);
-  digitalWrite(34, HIGH);
-  digitalWrite(35, HIGH);
-  digitalWrite(36, HIGH);
-  digitalWrite(37, HIGH);
-}
 
 // bisschen schlanker
 void fanControl(boolean b) {
-  for(int i = 0; i<8; i++) {
+  for (int i = 0; i < 8; i++) {
     digitalWrite(fanPins[i], b);
   }
 }
 
 void moveTurntables() {
-  // spin. the. wheels :)
+  for (int i = 0; i < 3; i++) {
+    if (turntableVel[i] > 0) {
+      turntables[i].setMaxSpeed(turntableVel[i]);
+      turntables[i].setSpeed(turntableVel[i]);
+      turntables[i].runSpeed();
+    } else turntables[i].stop();
+
+  }
 }
 
 void lightLED() {

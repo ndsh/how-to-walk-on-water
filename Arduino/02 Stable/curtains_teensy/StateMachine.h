@@ -34,7 +34,7 @@ void stateMachine() {
     break;
 
     case NETWORK:
-      digitalWrite(LED_BUILTIN, LOW);
+      //digitalWrite(LED_BUILTIN, LOW);
       if(showStateTitle || prevState == DATA) {
         Serial.println("→ Network");
         showStateTitle = false;
@@ -93,24 +93,26 @@ void stateMachine() {
         prevState = NETWORK;
         state = NETWORK;
       }
-      digitalWrite(LED_BUILTIN, HIGH);
+      
       //Serial.println("getting here");
 
-      ena[0] = artnet.getDmxFrame()[0];
-      vel[0] = artnet.getDmxFrame()[1];
-      dir[0] = artnet.getDmxFrame()[2];
+      //ena[0] = artnet.getDmxFrame()[0];
+      vel[0] = artnet.getDmxFrame()[0];
+      dir[0] = artnet.getDmxFrame()[1];
       
-      ena[1] = artnet.getDmxFrame()[3];
-      vel[1] = artnet.getDmxFrame()[4];
-      dir[1] = artnet.getDmxFrame()[5];
+      //ena[1] = artnet.getDmxFrame()[3];
+      vel[1] = artnet.getDmxFrame()[2];
+      dir[1] = artnet.getDmxFrame()[3];
       
-      ena[2] = artnet.getDmxFrame()[6];
-      vel[2] = artnet.getDmxFrame()[7];
-      dir[2] = artnet.getDmxFrame()[8];
+      //ena[2] = artnet.getDmxFrame()[6];
+      vel[2] = artnet.getDmxFrame()[4];
+      dir[2] = artnet.getDmxFrame()[5];
       
-      ena[3] = artnet.getDmxFrame()[9];
-      vel[3] = artnet.getDmxFrame()[10];
-      dir[3] = artnet.getDmxFrame()[11];
+      //ena[3] = artnet.getDmxFrame()[9];
+      vel[3] = artnet.getDmxFrame()[6];
+      dir[3] = artnet.getDmxFrame()[7];
+
+      ena = artnet.getDmxFrame()[8];
 
       static int messageCount = 0;
       // forward to arduino mega with cnc shield
@@ -130,13 +132,13 @@ void stateMachine() {
       HWSERIAL2.print("artnet");
       HWSERIAL2.print(",");
       for(int i = 0; i<4; i++) {
-        HWSERIAL2.print(ena[i]);
-        HWSERIAL2.print(",");
         HWSERIAL2.print(vel[i]);
         HWSERIAL2.print(",");
         HWSERIAL2.print(dir[i]);
         HWSERIAL2.print(",");
       }
+      HWSERIAL2.print(ena);
+      HWSERIAL2.print(",");
       HWSERIAL2.print("eof");
       HWSERIAL2.println(">");
     
